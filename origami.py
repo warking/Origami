@@ -813,7 +813,12 @@ class AutoZoomOnFocus(sublime_plugin.EventListener, WithSettings):
         # Read from global settings for backward compatibility
         fraction = view.settings().get("origami_auto_zoom_on_focus")
         if fraction is None:
-            fraction = self.settings().get("auto_zoom_on_focus")
+            fractionLoad = self.settings().get("auto_zoom_on_focus")
+            viewCount = Len(view.window().views())
+            if isinstance(fractionLoad, list) and Len(fractionLoad) >= viewCount:
+                fraction = fractionLoad[viewCount-1]
+            else:
+                fraction = fractionLoad
         if not fraction:
             return
         if view.settings().get("is_widget"):

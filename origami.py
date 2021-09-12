@@ -814,9 +814,10 @@ class AutoZoomOnFocus(sublime_plugin.EventListener, WithSettings):
         fraction = view.settings().get("origami_auto_zoom_on_focus")
         if fraction is None:
             fractionLoad = self.settings().get("auto_zoom_on_focus")
-            viewCount = Len(view.window().views())
-            if isinstance(fractionLoad, list) and Len(fractionLoad) >= viewCount:
-                fraction = fractionLoad[viewCount-1]
+            groupCount = view.window().num_groups()
+            if isinstance(fractionLoad, list):
+   	            fractionIndex = min(len(fractionLoad), groupCount) - 1
+   	            fraction = fractionLoad[fractionIndex]
             else:
                 fraction = fractionLoad
         if not fraction:
